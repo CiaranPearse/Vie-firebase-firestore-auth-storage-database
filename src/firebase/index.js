@@ -24,6 +24,7 @@ export default {
     }
     auth.onAuthStateChanged(user => {
       store.commit('updateUser',{ user })
+      store.dispatch('fetchUserData')
     })
   }
 }
