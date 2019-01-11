@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import firebase from 'firebase'
+import router from '@/routes'
 
 Vue.use(Vuex)
 
@@ -36,26 +37,17 @@ export default new Vuex.Store({
           const dateNow = new Date()
           console.log(this.state.user.id)
           firebase.firestore().collection("users").doc(this.state.user.id).set({
-            firstName: 'Saga',
-            lastName: 'Dash',
-            location: 'Cork, Ireland',
-            longitude: '-8.486316',
-            latitude: '51.896893',
-            timeZone: 'GMT',
-            language: 'en_US',
-            currency: 'USD',
-            avatar: 'http://ciaranfoley.com/assets/img/author/perry.jpg',
             userLevel: 'free',
             joinDate: dateNow.toISOString(),
             isAdmin: false
           })
         }
       )
-      // .then(
-      //   user => {
-      //     router.push('/profile')
-      //   }
-      // )
+      .then(
+        user => {
+          router.push('/profile')
+        }
+      )
       // .catch(
       //   error => {
       //     console.log('Error on signup: ', error)
