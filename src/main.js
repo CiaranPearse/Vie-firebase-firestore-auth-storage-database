@@ -25,4 +25,4 @@ new Vue({
 //   ...App
 // })
 
-export { app, router, store }
+export { router, store }

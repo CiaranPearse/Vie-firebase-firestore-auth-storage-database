@@ -10,7 +10,7 @@ export default {
   computed: {
     ...mapState(['user']),
     displayName () {
-      return this.user.displayName
+      return this.user.email
     }
   }
 }

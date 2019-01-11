@@ -1,8 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import store from '@/store/store'
 import Home from '@/views/Home'
 import SignIn from '@/views/SignIn'
 import SignOut from '@/views/SignOut'
+import SignUp from '@/views/SignUp'
 import Profile from '@/views/Profile'
 
 Vue.use(Router)
@@ -26,12 +28,17 @@ const router = new Router({
       component: SignOut
     },
     {
+      path: '/signup',
+      name: 'signup',
+      component: SignUp
+    },
+    {
       path: '/profile',
       name: 'profile',
-      component: Profile
-      // meta: {
-      //   authRequired: true
-      // }
+      component: Profile,
+      meta: {
+        authRequired: true
+      }
     }
   ]
 })
