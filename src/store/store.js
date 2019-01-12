@@ -9,8 +9,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     user: null,
-    userProfile: null,
-    dummyProfile: null
+    userProfile: null
   },
   mutations: {
     updateUser (state, { user }) {
@@ -37,7 +36,7 @@ export default new Vuex.Store({
       return state.user
     },
     userProfile (state) {
-      return 'dsvfsdf'
+      return state.userProfile
     }
   },
   computed: {
@@ -68,7 +67,6 @@ export default new Vuex.Store({
         router.push('/profile')
       )
       .catch(function(error) {
-        console.log("Error getting document:", error)
         commit('setError', error)
       })
     },
@@ -76,16 +74,14 @@ export default new Vuex.Store({
       commit('setProfile', null)
     },
     fetchUserData ({commit, getters}) {
+      let currentUser = this.state.user.uid
       commit('setLoading', true)
-      var docRef = firebase.firestore().collection('/users').doc('HW6DHs7k5uQo99y1CZt25u7yeq22')
+      var docRef = firebase.firestore().collection('/users').doc(currentUser)
       docRef.get().then(function(doc) {
         if (doc.exists) {
-          console.log("Document data:", doc.data())
           commit('setProfile', doc.data())
-          console.log(state.usersProfile)
         } else {
-          console.log("No such document!")
-          state.usersProfile = null
+          this.state.usersProfile = null
         }
       })
       .catch(
@@ -94,6 +90,68 @@ export default new Vuex.Store({
           commit('setError', error)
         }
       )
+    },
+    updateUserData ({commit}, payload) {
+      commit('setLoading', true)
+      const updateUserObj = {}
+      let filename
+      let ext
+      console.log('PAYLOAD', payload)
+      if (payload.firstName) {
+        updateUserObj.firstName = payload.firstName
+      }
+      if (payload.lastName) {
+        updateUserObj.lastName = payload.lastName
+      }
+      if (payload.avatar) {
+        updateUserObj.avatar = payload.avatar
+      }
+      if (payload.currency) {
+        updateUserObj.currency = payload.currency
+      }
+      if (payload.location) {
+        updateUserObj.location = payload.location
+      }
+      if (payload.timeZone) {
+        updateUserObj.timeZone = payload.timeZone
+      }
+      if (payload.longitude) {
+        updateUserObj.longitude = payload.longitude
+      }
+      if (payload.latitude) {
+        updateUserObj.latitude = payload.latitude
+      }
+      if (payload.language) {
+        updateUserObj.language = payload.language
+      }
+      if (payload.updated) {
+        updateUserObj.updated = payload.updated
+      }
+      if (payload.image) {
+        filename = payload.image.name
+        ext = filename.slice(filename.lastIndexOf('.'))
+        updateUserObj.imageExt = ext
+      }
+
+      let imageUrl
+      let key = firebase.auth().currentUser.uid
+      let userRef = firebase.firestore().collection('users').doc(firebase.auth().currentUser.uid)
+      let setWithMerge = userRef.set({
+        ...updateUserObj
+      }, { merge: true })
+        .then(() => {
+          return firebase.storage().ref('users/' + key + ext).put(payload.image)
+        })
+      .then(() => {
+        commit('setLoading', false)
+        console.log('This is the push of the USER payload', payload)
+        // commit('updateUser', payload)
+      })
+      .catch(error => {
+        console.log(error)
+        commit('setLoading', false)
+      })
+      console.log('at the end of the loop')
     }
   }
 })
