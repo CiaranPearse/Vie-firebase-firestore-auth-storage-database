@@ -3,12 +3,12 @@ import Firebase from 'firebase'
 import 'firebase/firestore'
 
 const config = {
-  apiKey: 'AIzaSyAlbfEeJB9g1rkpYS7Yhn4TRqvRd4RkVEA',
-  authDomain: 'mirror2019-b60e0.firebaseapp.com',
-  databaseURL: 'https://mirror2019-b60e0.firebaseio.com',
-  projectId: 'mirror2019-b60e0',
-  storageBucket: 'mirror2019-b60e0.appspot.com',
-  messagingSenderId: '555990526368'
+  apiKey: 'YOUR_FIREBASE_API_KAY',
+  authDomain: 'something.firebaseapp.com',
+  databaseURL: 'https://something.firebaseio.com',
+  projectId: 'something',
+  storageBucket: 'something.appspot.com',
+  messagingSenderId: 'SOME_NUMBER'
 }
 
 export default {
